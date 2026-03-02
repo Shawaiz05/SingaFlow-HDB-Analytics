@@ -362,7 +362,7 @@ buildAll();
 
 // FILTER FUNCTIONS
 function filterYear(btn,y){
-  document.querySelectorAll('.fbar .fb').slice(0,4).forEach(b=>b.classList.remove('on'));
+  Array.from(document.querySelectorAll('.fbar .fb')).slice(0,4).forEach(b=>b.classList.remove('on'));
   btn.classList.add('on');
   curYear=y;
   buildTrend();
