@@ -4,222 +4,231 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SingaFlow — Singapore HDB Analytics</title>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.4.3/echarts.min.js"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;}
-:root{--red:#EF233C;--red2:#D90429;--bg:#F5F5F7;--white:#FFFFFF;--ink:#1A1A2E;--muted:#8888A0;--border:#E2E2EC;--green:#06D6A0;--blue:#118AB2;--amber:#FFB703;}
-body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--ink);min-height:100vh;cursor:none;overflow-x:hidden;}
-.cur{position:fixed;width:6px;height:6px;background:var(--red);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);box-shadow:0 0 8px rgba(239,35,60,0.5);}
-.cur-ring{position:fixed;width:28px;height:28px;border:1.5px solid rgba(239,35,60,0.3);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:left .08s,top .08s,width .25s,height .25s;}
-.cur.big{width:12px;height:12px;}.cur-ring.big{width:48px;height:48px;border-color:rgba(239,35,60,0.5);}
-.page{max-width:1400px;margin:0 auto;padding:18px;}
+:root{
+  --red:#EF233C;--red2:#D90429;
+  --bg:#F4F4F6;--white:#FFFFFF;
+  --ink:#1A1A2E;--muted:#888899;
+  --border:#E0E0EA;
+  --green:#06D6A0;--blue:#118AB2;--amber:#FFB703;
+}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--ink);}
 
-.hdr{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:20px;margin-bottom:16px;padding:14px 22px;background:var(--white);border:1px solid var(--border);border-radius:14px;box-shadow:0 2px 10px rgba(0,0,0,0.04);}
-.logo-name{font-size:24px;font-weight:800;color:var(--ink);letter-spacing:-1px;}
-.logo-name span{color:var(--red);}
-.logo-sub{font-family:'JetBrains Mono',monospace;font-size:7px;color:var(--muted);letter-spacing:2px;margin-top:3px;text-transform:uppercase;}
-.hdr-mid{display:flex;justify-content:center;gap:5px;flex-wrap:wrap;}
-.chip{font-family:'JetBrains Mono',monospace;font-size:7px;padding:3px 9px;border-radius:20px;border:1px solid;text-transform:uppercase;letter-spacing:.5px;}
-.c1{border-color:rgba(239,35,60,0.3);color:var(--red);background:rgba(239,35,60,0.05);}
-.c2{border-color:rgba(17,138,178,0.3);color:var(--blue);background:rgba(17,138,178,0.05);}
-.c3{border-color:rgba(6,214,160,0.3);color:var(--green);background:rgba(6,214,160,0.05);}
-.c4{border-color:rgba(255,183,3,0.3);color:var(--amber);background:rgba(255,183,3,0.05);}
+/* PAGE */
+.page{max-width:1380px;margin:0 auto;padding:16px;}
+
+/* HEADER */
+.hdr{display:flex;align-items:center;justify-content:space-between;padding:14px 20px;background:var(--white);border:1px solid var(--border);border-radius:12px;margin-bottom:14px;box-shadow:0 1px 8px rgba(0,0,0,0.04);}
+.logo{font-size:22px;font-weight:800;color:var(--ink);letter-spacing:-0.5px;}
+.logo span{color:var(--red);}
+.logo-sub{font-family:'JetBrains Mono',monospace;font-size:7px;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase;margin-top:2px;}
+.chips{display:flex;gap:5px;flex-wrap:wrap;}
+.chip{font-family:'JetBrains Mono',monospace;font-size:7px;padding:3px 8px;border-radius:20px;border:1px solid;text-transform:uppercase;letter-spacing:.5px;}
+.cr{border-color:rgba(239,35,60,0.3);color:var(--red);background:rgba(239,35,60,0.05);}
+.cb{border-color:rgba(17,138,178,0.3);color:var(--blue);background:rgba(17,138,178,0.05);}
+.cg{border-color:rgba(6,214,160,0.3);color:var(--green);background:rgba(6,214,160,0.05);}
+.ca{border-color:rgba(255,183,3,0.3);color:var(--amber);background:rgba(255,183,3,0.05);}
 .hdr-right{text-align:right;}
-.author{font-size:13px;font-weight:700;color:var(--ink);}
-.author-sub{font-family:'JetBrains Mono',monospace;font-size:7px;color:var(--muted);margin-top:3px;letter-spacing:1px;}
-.live-badge{display:inline-flex;align-items:center;gap:4px;background:var(--red);color:white;font-family:'JetBrains Mono',monospace;font-size:7px;padding:3px 9px;border-radius:20px;margin-top:5px;letter-spacing:1px;}
-.ld{width:4px;height:4px;border-radius:50%;background:white;animation:blink .8s infinite;}
-@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+.author{font-size:12px;font-weight:700;color:var(--ink);}
+.author-sub{font-family:'JetBrains Mono',monospace;font-size:7px;color:var(--muted);margin-top:2px;}
+.live{display:inline-flex;align-items:center;gap:4px;background:var(--red);color:#fff;font-family:'JetBrains Mono',monospace;font-size:7px;padding:3px 8px;border-radius:20px;margin-top:4px;}
+.ldot{width:4px;height:4px;border-radius:50%;background:#fff;animation:blink 1s infinite;}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
 
+/* KPI ROW */
 .krow{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:14px;}
-.kpi{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:14px 16px;position:relative;overflow:hidden;transition:transform .2s,box-shadow .2s;cursor:none;}
-.kpi:hover{transform:translateY(-3px);box-shadow:0 10px 28px rgba(0,0,0,0.07);}
-.kpi::after{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;border-radius:0 0 12px 12px;}
+.kpi{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:14px;position:relative;overflow:hidden;transition:transform .15s,box-shadow .15s;}
+.kpi:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(0,0,0,0.07);}
+.kpi::after{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;}
 .k1::after{background:var(--red);}
 .k2::after{background:var(--green);}
 .k3::after{background:var(--blue);}
 .k4::after{background:var(--amber);}
 .k5::after{background:var(--red2);}
-.kpi-ico{font-size:18px;margin-bottom:7px;}
-.kpi-lbl{font-family:'JetBrains Mono',monospace;font-size:7px;color:var(--muted);text-transform:uppercase;letter-spacing:2px;margin-bottom:5px;}
-.kpi-val{font-size:26px;font-weight:800;color:var(--ink);line-height:1;margin-bottom:2px;letter-spacing:-1px;}
-.kpi-sub{font-size:9px;color:var(--muted);}
-.kpi-chg{font-family:'JetBrains Mono',monospace;font-size:8px;margin-top:4px;display:inline-flex;align-items:center;padding:2px 6px;border-radius:20px;}
+.kico{font-size:18px;margin-bottom:6px;}
+.klbl{font-family:'JetBrains Mono',monospace;font-size:7px;color:var(--muted);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:4px;}
+.kval{font-size:24px;font-weight:800;color:var(--ink);line-height:1;letter-spacing:-1px;}
+.ksub{font-size:9px;color:var(--muted);margin-top:2px;}
+.kchg{font-family:'JetBrains Mono',monospace;font-size:8px;margin-top:4px;display:inline-block;padding:2px 6px;border-radius:20px;}
 .up{background:rgba(6,214,160,0.1);color:var(--green);}
 .dn{background:rgba(239,35,60,0.08);color:var(--red);}
 
-.fbar{display:flex;align-items:center;gap:6px;padding:8px 14px;margin-bottom:12px;background:var(--white);border:1px solid var(--border);border-radius:10px;flex-wrap:wrap;}
-.flbl{font-family:'JetBrains Mono',monospace;font-size:7px;color:var(--muted);text-transform:uppercase;letter-spacing:2px;}
-.sep{width:1px;height:14px;background:var(--border);margin:0 2px;}
-.fb{font-family:'JetBrains Mono',monospace;font-size:7px;padding:4px 10px;border-radius:20px;border:1px solid var(--border);background:transparent;color:var(--muted);cursor:none;transition:all .2s;text-transform:uppercase;letter-spacing:.5px;}
-.fb:hover,.fb.on{background:var(--red);border-color:var(--red);color:white;}
+/* FILTER BAR */
+.fbar{display:flex;align-items:center;gap:5px;padding:8px 14px;margin-bottom:12px;background:var(--white);border:1px solid var(--border);border-radius:10px;flex-wrap:wrap;}
+.flbl{font-family:'JetBrains Mono',monospace;font-size:7px;color:var(--muted);text-transform:uppercase;letter-spacing:1.5px;}
+.sep{width:1px;height:16px;background:var(--border);margin:0 4px;}
+.fb{font-family:'JetBrains Mono',monospace;font-size:7px;padding:4px 10px;border-radius:20px;border:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;transition:all .15s;text-transform:uppercase;}
+.fb:hover{background:rgba(239,35,60,0.06);border-color:rgba(239,35,60,0.2);color:var(--red);}
+.fb.on{background:var(--red);border-color:var(--red);color:#fff;}
 
-.grid1{display:grid;grid-template-columns:1.6fr 1fr;gap:12px;margin-bottom:12px;}
-.grid2{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:12px;}
-.grid3{display:grid;grid-template-columns:1.2fr 1fr;gap:12px;}
+/* GRID LAYOUTS */
+.g2{display:grid;grid-template-columns:1.6fr 1fr;gap:12px;margin-bottom:12px;}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:12px;}
+.g2b{display:grid;grid-template-columns:1.3fr 1fr;gap:12px;margin-bottom:12px;}
 
-.card{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:16px;transition:box-shadow .2s;}
-.card:hover{box-shadow:0 4px 20px rgba(0,0,0,0.06);}
-.ct{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;}
+/* CARDS */
+.card{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:16px;transition:box-shadow .15s;}
+.card:hover{box-shadow:0 4px 16px rgba(0,0,0,0.05);}
+.ctop{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;}
 .ctitle{font-size:12px;font-weight:700;color:var(--ink);}
-.csub{font-family:'JetBrains Mono',monospace;font-size:7px;color:var(--muted);margin-top:2px;letter-spacing:.5px;}
-.badge{font-family:'JetBrains Mono',monospace;font-size:7px;padding:2px 8px;border-radius:20px;text-transform:uppercase;letter-spacing:.5px;flex-shrink:0;}
-.b1{background:rgba(239,35,60,0.08);border:1px solid rgba(239,35,60,0.2);color:var(--red);}
-.b2{background:rgba(6,214,160,0.08);border:1px solid rgba(6,214,160,0.2);color:var(--green);}
-.b3{background:rgba(17,138,178,0.08);border:1px solid rgba(17,138,178,0.2);color:var(--blue);}
-.b4{background:rgba(255,183,3,0.08);border:1px solid rgba(255,183,3,0.2);color:var(--amber);}
+.csub{font-family:'JetBrains Mono',monospace;font-size:7px;color:var(--muted);margin-top:2px;}
+.badge{font-family:'JetBrains Mono',monospace;font-size:7px;padding:2px 7px;border-radius:20px;text-transform:uppercase;flex-shrink:0;}
+.br{background:rgba(239,35,60,0.08);border:1px solid rgba(239,35,60,0.18);color:var(--red);}
+.bg{background:rgba(6,214,160,0.08);border:1px solid rgba(6,214,160,0.18);color:var(--green);}
+.bb{background:rgba(17,138,178,0.08);border:1px solid rgba(17,138,178,0.18);color:var(--blue);}
+.ba{background:rgba(255,183,3,0.08);border:1px solid rgba(255,183,3,0.18);color:var(--amber);}
 
+/* TOGGLE BUTTONS */
 .trow{display:flex;gap:4px;margin-bottom:8px;}
-.tb{font-family:'JetBrains Mono',monospace;font-size:7px;padding:3px 9px;border-radius:20px;border:1px solid var(--border);background:transparent;color:var(--muted);cursor:none;transition:all .2s;text-transform:uppercase;}
-.tb.on{background:var(--ink);color:white;border-color:var(--ink);}
+.tb{font-family:'JetBrains Mono',monospace;font-size:7px;padding:3px 9px;border-radius:20px;border:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;transition:all .15s;text-transform:uppercase;}
+.tb.on{background:var(--ink);color:#fff;border-color:var(--ink);}
 
-.ibox{padding:12px;border-radius:10px;margin-bottom:8px;transition:transform .2s;cursor:none;}
-.ibox:hover{transform:translateX(4px);}
+/* INSIGHT BOXES */
+.ibox{padding:12px;border-radius:10px;margin-bottom:8px;transition:transform .15s;}
+.ibox:hover{transform:translateX(3px);}
 .ib1{background:rgba(239,35,60,0.04);border:1px solid rgba(239,35,60,0.12);}
 .ib2{background:rgba(6,214,160,0.04);border:1px solid rgba(6,214,160,0.12);}
 .ib3{background:rgba(17,138,178,0.04);border:1px solid rgba(17,138,178,0.12);}
 .ib4{background:rgba(255,183,3,0.04);border:1px solid rgba(255,183,3,0.12);}
-.inum{font-size:24px;font-weight:800;letter-spacing:-1px;line-height:1;margin-bottom:4px;}
+.inum{font-size:22px;font-weight:800;letter-spacing:-1px;line-height:1;margin-bottom:3px;}
 .in1{color:var(--red);}.in2{color:var(--green);}.in3{color:var(--blue);}.in4{color:var(--amber);}
 .itxt{font-size:9px;color:var(--muted);line-height:1.6;}
 
-.pipe{display:flex;align-items:center;gap:6px;padding:7px 10px;background:var(--bg);border:1px solid var(--border);border-radius:8px;transition:border-color .2s;margin-bottom:4px;}
-.pipe:hover{border-color:rgba(239,35,60,0.2);}
-.pipe-ico{font-size:13px;}
-.pipe-name{font-size:10px;font-weight:600;flex:1;color:var(--ink);}
-.pipe-st{font-family:'JetBrains Mono',monospace;font-size:7px;padding:2px 6px;border-radius:10px;}
-.ps-done{background:rgba(6,214,160,0.1);border:1px solid rgba(6,214,160,0.2);color:var(--green);}
-.ps-live{background:rgba(239,35,60,0.1);border:1px solid rgba(239,35,60,0.2);color:var(--red);}
-.pipe-conn{padding-left:26px;font-family:'JetBrains Mono',monospace;font-size:7px;color:var(--muted);margin:-2px 0 4px 0;}
+/* PIPELINE */
+.pstep{display:flex;align-items:center;gap:8px;padding:7px 10px;background:var(--bg);border:1px solid var(--border);border-radius:8px;margin-bottom:4px;transition:border-color .15s;}
+.pstep:hover{border-color:rgba(239,35,60,0.2);}
+.pico{font-size:13px;}
+.pname{font-size:10px;font-weight:600;flex:1;color:var(--ink);}
+.pst{font-family:'JetBrains Mono',monospace;font-size:7px;padding:2px 6px;border-radius:10px;}
+.done{background:rgba(6,214,160,0.1);border:1px solid rgba(6,214,160,0.2);color:var(--green);}
+.live2{background:rgba(239,35,60,0.1);border:1px solid rgba(239,35,60,0.2);color:var(--red);}
+.pconn{padding-left:28px;font-family:'JetBrains Mono',monospace;font-size:7px;color:var(--muted);margin:-1px 0 3px;}
 
+/* FOOTER */
 .ftr{margin-top:12px;padding:12px 18px;background:var(--ink);border-radius:12px;display:flex;justify-content:space-between;align-items:center;}
-.ftxt{font-family:'JetBrains Mono',monospace;font-size:7px;color:rgba(255,255,255,0.25);}
-.ftxt strong{color:rgba(255,255,255,0.5);}
+.ftxt{font-family:'JetBrains Mono',monospace;font-size:7px;color:rgba(255,255,255,0.3);}
+.ftxt strong{color:rgba(255,255,255,0.6);}
 .ftechs{display:flex;gap:4px;}
-.ftp{font-family:'JetBrains Mono',monospace;font-size:7px;padding:2px 7px;border-radius:10px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.25);text-transform:uppercase;}
+.ftp{font-family:'JetBrains Mono',monospace;font-size:7px;padding:2px 7px;border-radius:10px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.3);text-transform:uppercase;}
 </style>
 </head>
 <body>
-<div class="cur" id="cur"></div>
-<div class="cur-ring" id="ring"></div>
 <div class="page">
 
+<!-- HEADER -->
 <div class="hdr">
   <div>
-    <div class="logo-name">🇸🇬 Singa<span>Flow</span></div>
+    <div class="logo">🇸🇬 Singa<span>Flow</span></div>
     <div class="logo-sub">Singapore HDB Resale Analytics · AWS S3 · Glue · Athena · 226K Transactions · 2025</div>
   </div>
-  <div class="hdr-mid">
-    <span class="chip c1">AWS S3</span>
-    <span class="chip c2">Glue ETL</span>
-    <span class="chip c3">Athena SQL</span>
-    <span class="chip c4">Python</span>
-    <span class="chip c1">226K Records</span>
-    <span class="chip c3">data.gov.sg</span>
+  <div class="chips">
+    <span class="chip cr">AWS S3</span>
+    <span class="chip cb">Glue ETL</span>
+    <span class="chip cg">Athena SQL</span>
+    <span class="chip ca">Python</span>
+    <span class="chip cr">226K Records</span>
+    <span class="chip cg">data.gov.sg</span>
   </div>
   <div class="hdr-right">
     <div class="author">Mohammed Shawaiz Hussain</div>
     <div class="author-sub">Data Analyst · AWS · 2025</div>
-    <div><span class="live-badge"><span class="ld"></span>LIVE DATA</span></div>
+    <div class="live"><span class="ldot"></span>LIVE DATA</div>
   </div>
 </div>
 
+<!-- KPI ROW -->
 <div class="krow">
-  <div class="kpi k1"><div class="kpi-ico">🏠</div><div class="kpi-lbl">Total Transactions</div><div class="kpi-val">226K</div><div class="kpi-sub">HDB resale records</div><div class="kpi-chg up">↑ 2017–2025</div></div>
-  <div class="kpi k2"><div class="kpi-ico">💰</div><div class="kpi-lbl">2025 Avg Price</div><div class="kpi-val">$652K</div><div class="kpi-sub">All flat types</div><div class="kpi-chg up">↑ +47% since 2017</div></div>
-  <div class="kpi k3"><div class="kpi-ico">📍</div><div class="kpi-lbl">Most Expensive</div><div class="kpi-val" style="font-size:15px;margin-top:5px;">Bukit Timah</div><div class="kpi-sub">$774K avg price</div><div class="kpi-chg up">↑ Top district</div></div>
-  <div class="kpi k4"><div class="kpi-ico">📈</div><div class="kpi-lbl">Floor Premium</div><div class="kpi-val">+74%</div><div class="kpi-sub">High vs low floor</div><div class="kpi-chg up">↑ $849K vs $487K</div></div>
-  <div class="kpi k5"><div class="kpi-ico">🏆</div><div class="kpi-lbl">Most Active Town</div><div class="kpi-val" style="font-size:15px;margin-top:5px;">Sengkang</div><div class="kpi-sub">18,447 transactions</div><div class="kpi-chg up">↑ Highest volume</div></div>
+  <div class="kpi k1"><div class="kico">🏠</div><div class="klbl">Total Transactions</div><div class="kval">226K</div><div class="ksub">HDB resale records</div><div class="kchg up">↑ 2017–2025</div></div>
+  <div class="kpi k2"><div class="kico">💰</div><div class="klbl">2025 Avg Price</div><div class="kval">$652K</div><div class="ksub">All flat types</div><div class="kchg up">↑ +47% since 2017</div></div>
+  <div class="kpi k3"><div class="kico">📍</div><div class="klbl">Most Expensive</div><div class="kval" style="font-size:14px;margin-top:4px;">Bukit Timah</div><div class="ksub">$774K avg price</div><div class="kchg up">↑ Top district</div></div>
+  <div class="kpi k4"><div class="kico">📈</div><div class="klbl">Floor Premium</div><div class="kval">+74%</div><div class="ksub">High vs low floor</div><div class="kchg up">↑ $849K vs $487K</div></div>
+  <div class="kpi k5"><div class="kico">🏆</div><div class="klbl">Most Active Town</div><div class="kval" style="font-size:14px;margin-top:4px;">Sengkang</div><div class="ksub">18,447 transactions</div><div class="kchg up">↑ Highest volume</div></div>
 </div>
 
+<!-- FILTER BAR -->
 <div class="fbar">
-  <span class="flbl">Year</span>
-  <button class="fb on" onclick="setFilter(this)">All Years</button>
-  <button class="fb" onclick="setFilter(this)">2021</button>
-  <button class="fb" onclick="setFilter(this)">2022</button>
-  <button class="fb" onclick="setFilter(this)">2023</button>
-  <button class="fb" onclick="setFilter(this)">2024</button>
-  <button class="fb" onclick="setFilter(this)">2025</button>
+  <span class="flbl">Year Filter</span>
+  <button class="fb on" onclick="filterYear(this,'all')">All Years</button>
+  <button class="fb" onclick="filterYear(this,'early')">2017–2019</button>
+  <button class="fb" onclick="filterYear(this,'mid')">2020–2022</button>
+  <button class="fb" onclick="filterYear(this,'recent')">2023–2025</button>
   <div class="sep"></div>
-  <span class="flbl">View</span>
-  <button class="fb on" onclick="setFilter(this)">All Types</button>
-  <button class="fb" onclick="setFilter(this)">4 Room</button>
-  <button class="fb" onclick="setFilter(this)">5 Room</button>
-  <button class="fb" onclick="setFilter(this)">Executive</button>
+  <span class="flbl">Metric</span>
+  <button class="fb on" id="mv-price" onclick="switchMetric(this,'price')">Avg Price</button>
+  <button class="fb" id="mv-vol" onclick="switchMetric(this,'vol')">Volume</button>
 </div>
 
-<div class="grid1">
+<!-- ROW 1 -->
+<div class="g2">
   <div class="card">
-    <div class="ct"><div><div class="ctitle">HDB Price Trend 2017–2025</div><div class="csub">Avg resale price yearly · drag slider to zoom · real Athena data</div></div><span class="badge b1">Brushable</span></div>
-    <div class="trow">
-      <button class="tb on" id="tb-price" onclick="switchTrend('price',this)">Avg Price</button>
-      <button class="tb" id="tb-vol" onclick="switchTrend('vol',this)">Volume</button>
-    </div>
-    <div id="trendChart" style="height:210px"></div>
+    <div class="ctop"><div><div class="ctitle">HDB Price Trend 2017–2025</div><div class="csub">Yearly avg resale price · drag slider to zoom · real Athena SQL data</div></div><span class="badge br">Brushable</span></div>
+    <div id="trendChart" style="height:220px"></div>
   </div>
   <div class="card">
-    <div class="ct"><div><div class="ctitle">Top Towns by Avg Price</div><div class="csub">Hover for transaction count</div></div><span class="badge b2">Ranking</span></div>
-    <div id="townChart" style="height:240px"></div>
+    <div class="ctop"><div><div class="ctitle">Top 10 Towns by Avg Price</div><div class="csub">Hover for details · Bukit Timah leads at $774K</div></div><span class="badge bg">Ranking</span></div>
+    <div id="townChart" style="height:250px"></div>
   </div>
 </div>
 
-<div class="grid2">
+<!-- ROW 2 -->
+<div class="g3">
   <div class="card">
-    <div class="ct"><div><div class="ctitle">Flat Type Breakdown</div><div class="csub">Volume by flat type</div></div><span class="badge b3">Mix</span></div>
-    <div id="flatChart" style="height:175px"></div>
+    <div class="ctop"><div><div class="ctitle">Flat Type Breakdown</div><div class="csub">Volume by flat type · hover for avg price</div></div><span class="badge bb">Mix</span></div>
+    <div id="flatChart" style="height:185px"></div>
   </div>
   <div class="card">
-    <div class="ct"><div><div class="ctitle">Floor Level vs Price</div><div class="csub">Higher floor = higher premium</div></div><span class="badge b4">Premium</span></div>
-    <div id="floorChart" style="height:175px"></div>
+    <div class="ctop"><div><div class="ctitle">Floor Level vs Price</div><div class="csub">Higher floor = bigger premium · +74%</div></div><span class="badge ba">Premium</span></div>
+    <div id="floorChart" style="height:185px"></div>
   </div>
   <div class="card">
-    <div class="ct"><div><div class="ctitle">Most Expensive Streets</div><div class="csub">Top 10 by avg resale price</div></div><span class="badge b1">Hotspots</span></div>
-    <div id="streetChart" style="height:175px"></div>
+    <div class="ctop"><div><div class="ctitle">Most Expensive Streets</div><div class="csub">Top 10 by avg resale price · SGD</div></div><span class="badge br">Hotspots</span></div>
+    <div id="streetChart" style="height:185px"></div>
   </div>
 </div>
 
-<div class="grid3">
+<!-- ROW 3 -->
+<div class="g2b">
   <div class="card">
-    <div class="ct"><div><div class="ctitle">Key Insights from Athena SQL Queries</div><div class="csub">5 queries · 226K real HDB transactions · data.gov.sg</div></div><span class="badge b1">Findings</span></div>
+    <div class="ctop"><div><div class="ctitle">Key Insights from Athena SQL</div><div class="csub">5 queries · 226K real HDB transactions · data.gov.sg official data</div></div><span class="badge br">Findings</span></div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
-      <div class="ibox ib1"><div class="inum in1">+47%</div><div class="itxt">HDB prices grew from $444K avg in 2017 to $652K in 2025 — post-COVID 2021 boom drove biggest annual jump</div></div>
-      <div class="ibox ib2"><div class="inum in2">+74%</div><div class="itxt">Very high floor (25+) flats avg $849K vs low floor $487K — same sqm area, pure view and height premium</div></div>
-      <div class="ibox ib3"><div class="inum in3">$1.1M</div><div class="itxt">Bidadari Park Drive and Cantonment Road are Singapore's most expensive HDB streets — exceeding $1.1M avg</div></div>
-      <div class="ibox ib4"><div class="inum in4">95K</div><div class="itxt">4-Room flats dominate with 95,882 transactions — most liquid and popular segment in Singapore's HDB market</div></div>
+      <div class="ibox ib1"><div class="inum in1">+47%</div><div class="itxt">HDB prices grew from $444K in 2017 to $652K in 2025. Post-COVID 2021 saw the biggest annual price surge.</div></div>
+      <div class="ibox ib2"><div class="inum in2">+74%</div><div class="itxt">Very high floor (25+) flats avg $849K vs low floor $487K. Same sqm — pure height and view premium.</div></div>
+      <div class="ibox ib3"><div class="inum in3">$1.1M</div><div class="itxt">Bidadari Park Drive and Cantonment Road are Singapore's priciest HDB streets — both exceeding $1.1M avg.</div></div>
+      <div class="ibox ib4"><div class="inum in4">95K</div><div class="itxt">4-Room flats dominate with 95,882 transactions — most liquid and popular segment in Singapore's HDB market.</div></div>
     </div>
   </div>
   <div class="card">
-    <div class="ct"><div><div class="ctitle">AWS Data Pipeline Architecture</div><div class="csub">End-to-end cloud data engineering</div></div><span class="badge b2">Cloud</span></div>
+    <div class="ctop"><div><div class="ctitle">AWS Data Pipeline Architecture</div><div class="csub">End-to-end cloud data engineering</div></div><span class="badge bg">Cloud</span></div>
     <div>
-      <div class="pipe"><span class="pipe-ico">📥</span><span class="pipe-name">data.gov.sg Open API</span><span class="pipe-st ps-done">SOURCE</span></div>
-      <div class="pipe-conn">↓ 226,085 HDB resale transactions downloaded</div>
-      <div class="pipe"><span class="pipe-ico">🗄️</span><span class="pipe-name">AWS S3 Data Lake</span><span class="pipe-st ps-done">DONE</span></div>
-      <div class="pipe-conn">↓ Raw CSV stored — bucket: singapore-hdb-shawaiz</div>
-      <div class="pipe"><span class="pipe-ico">⚙️</span><span class="pipe-name">AWS Glue ETL Crawler</span><span class="pipe-st ps-done">DONE</span></div>
-      <div class="pipe-conn">↓ Schema auto-catalogued · 11 columns detected</div>
-      <div class="pipe"><span class="pipe-ico">🔍</span><span class="pipe-name">AWS Athena SQL Engine</span><span class="pipe-st ps-done">DONE</span></div>
-      <div class="pipe-conn">↓ 5 analytical queries · town · flat · floor · streets · trend</div>
-      <div class="pipe"><span class="pipe-ico">🐍</span><span class="pipe-name">Python + Google Colab</span><span class="pipe-st ps-done">DONE</span></div>
-      <div class="pipe-conn">↓ Charts generated · data arrays prepared</div>
-      <div class="pipe"><span class="pipe-ico">🇸🇬</span><span class="pipe-name">SingaFlow Dashboard</span><span class="pipe-st ps-live">LIVE</span></div>
+      <div class="pstep"><span class="pico">📥</span><span class="pname">data.gov.sg Open Data</span><span class="pst done">SOURCE</span></div>
+      <div class="pconn">↓ 226,085 HDB resale transactions downloaded as CSV</div>
+      <div class="pstep"><span class="pico">🗄️</span><span class="pname">AWS S3 Data Lake</span><span class="pst done">DONE</span></div>
+      <div class="pconn">↓ Raw CSV stored · bucket: singapore-hdb-shawaiz</div>
+      <div class="pstep"><span class="pico">⚙️</span><span class="pname">AWS Glue ETL Crawler</span><span class="pst done">DONE</span></div>
+      <div class="pconn">↓ Schema auto-catalogued · 11 columns · hdb_singapore_db</div>
+      <div class="pstep"><span class="pico">🔍</span><span class="pname">AWS Athena SQL Engine</span><span class="pst done">DONE</span></div>
+      <div class="pconn">↓ 5 analytical queries · town · flat · floor · streets · trend</div>
+      <div class="pstep"><span class="pico">🐍</span><span class="pname">Python + Google Colab</span><span class="pst done">DONE</span></div>
+      <div class="pconn">↓ Charts generated · Singapore red/white theme</div>
+      <div class="pstep"><span class="pico">🇸🇬</span><span class="pname">SingaFlow Dashboard</span><span class="pst live2">LIVE</span></div>
     </div>
   </div>
 </div>
 
+<!-- FOOTER -->
 <div class="ftr">
   <div class="ftxt">Built by <strong>Mohammed Shawaiz Hussain</strong> · SingaFlow Singapore HDB Analytics · AWS S3 + Glue + Athena + Python · 226K Real Transactions · data.gov.sg · 2025</div>
   <div class="ftechs">
     <span class="ftp">data.gov.sg</span><span class="ftp">AWS S3</span><span class="ftp">Glue</span><span class="ftp">Athena</span><span class="ftp">Python</span><span class="ftp">ECharts</span>
   </div>
 </div>
+
 </div>
-
 <script>
-const cur=document.getElementById('cur'),ring=document.getElementById('ring');
-document.addEventListener('mousemove',e=>{cur.style.left=e.clientX+'px';cur.style.top=e.clientY+'px';ring.style.left=e.clientX+'px';ring.style.top=e.clientY+'px';});
-document.querySelectorAll('button,.kpi,.card,.ibox,.pipe').forEach(el=>{el.addEventListener('mouseenter',()=>{cur.classList.add('big');ring.classList.add('big');});el.addEventListener('mouseleave',()=>{cur.classList.remove('big');ring.classList.remove('big');});});
-
+// REAL DATA FROM ATHENA QUERIES
 const TOWN_NAMES=["BUKIT TIMAH","BISHAN","CENTRAL AREA","QUEENSTOWN","BUKIT MERAH","KALLANG/WHAMPOA","PASIR RIS","TOA PAYOH","SERANGOON","TAMPINES"];
 const TOWN_PRICES=[774429,710322,690844,639832,637977,593990,585440,572452,565633,563609];
 const FLAT_TYPES=["MULTI-GEN","EXECUTIVE","5 ROOM","4 ROOM","3 ROOM","2 ROOM","1 ROOM"];
@@ -228,70 +237,146 @@ const FLAT_PRICES=[859598,733919,626310,531227,373440,301999,211987];
 const YEARS=["2017","2018","2019","2020","2021","2022","2023","2024","2025"];
 const YEARLY_PRICES=[443889,441282,432138,452279,511381,549714,571806,612597,652494];
 const YEARLY_TX=[20509,21561,22186,23333,29087,26720,25754,27832,25091];
-const FLOOR_LABELS=["Low (01-06)","Mid (07-12)","Upper Mid","High (19-24)","Very High (25+)"];
+const FLOOR_LABELS=["Low (01-06)","Mid (07-12)","Upper Mid (13-18)","High (19-24)","Very High (25+)"];
 const FLOOR_PRICES=[487122,516697,577983,686963,849023];
 const STREET_NAMES=["BIDADARI PK DR","CANTONMENT RD","ALKAFF CRES","LOR 1A TOA PAYOH","BOON TIONG RD","HENDERSON RD","ANG MO KIO ST 21","REDHILL LANE","BOON KENG RD","TOH YI DR"];
 const STREET_PRICES=[1105914,1105013,1005064,954068,952585,924792,913968,913858,912536,899268];
 
-const tt={backgroundColor:'rgba(255,255,255,0.97)',borderColor:'rgba(26,26,46,0.1)',borderWidth:1,textStyle:{color:'#1A1A2E',fontFamily:'JetBrains Mono',fontSize:10},padding:10};
-const ax={axisLine:{lineStyle:{color:'#E2E2EC'}},axisTick:{lineStyle:{color:'#E2E2EC'}},axisLabel:{color:'#8888A0',fontFamily:'JetBrains Mono',fontSize:8},splitLine:{lineStyle:{color:'rgba(0,0,0,0.04)'}}};
+// YEAR FILTER RANGES
+const YEAR_FILTERS={
+  all:{years:YEARS,prices:YEARLY_PRICES,tx:YEARLY_TX},
+  early:{years:["2017","2018","2019"],prices:[443889,441282,432138],tx:[20509,21561,22186]},
+  mid:{years:["2020","2021","2022"],prices:[452279,511381,549714],tx:[23333,29087,26720]},
+  recent:{years:["2023","2024","2025"],prices:[571806,612597,652494],tx:[25754,27832,25091]}
+};
+let curYear='all', curMetric='price';
 
-// TREND
-const trendChart=echarts.init(document.getElementById('trendChart'),null,{renderer:'canvas'});
-let curM='price';
-function trendOpt(m){
-  const d=m==='price'?YEARLY_PRICES:YEARLY_TX;
-  return{backgroundColor:'transparent',tooltip:{...tt,trigger:'axis',axisPointer:{type:'cross',label:{backgroundColor:'rgba(239,35,60,0.08)'}},formatter:p=>`<b>${p[0].axisValue}</b><br/>${m==='price'?'Avg: $'+p[0].value.toLocaleString():'Transactions: '+p[0].value.toLocaleString()}`},
-  grid:{top:5,right:10,bottom:42,left:58},
-  xAxis:{type:'category',data:YEARS,...ax},
-  yAxis:{type:'value',...ax,axisLabel:{...ax.axisLabel,formatter:v=>m==='price'?'$'+(v/1000).toFixed(0)+'K':(v/1000).toFixed(0)+'K'}},
-  dataZoom:[{type:'inside'},{type:'slider',show:true,height:16,bottom:18,borderColor:'rgba(239,35,60,0.15)',fillerColor:'rgba(239,35,60,0.06)',handleStyle:{color:'#EF233C'},textStyle:{color:'#8888A0',fontFamily:'JetBrains Mono',fontSize:7}}],
-  series:[{type:'line',data:d,smooth:true,symbol:'circle',symbolSize:6,lineStyle:{color:'#EF233C',width:2.5},itemStyle:{color:'#EF233C'},areaStyle:{color:{type:'linear',x:0,y:0,x2:0,y2:1,colorStops:[{offset:0,color:'rgba(239,35,60,0.15)'},{offset:1,color:'rgba(239,35,60,0.01)'}]}}}]};
+// TOOLTIP & AXIS DEFAULTS
+const TT={backgroundColor:'rgba(255,255,255,0.98)',borderColor:'rgba(26,26,46,0.1)',borderWidth:1,textStyle:{color:'#1A1A2E',fontFamily:'JetBrains Mono',fontSize:10},padding:[8,12]};
+const AX={axisLine:{lineStyle:{color:'#E0E0EA'}},axisTick:{lineStyle:{color:'#E0E0EA'}},axisLabel:{color:'#888899',fontFamily:'JetBrains Mono',fontSize:8},splitLine:{lineStyle:{color:'rgba(0,0,0,0.04)'}}};
+
+// INIT ALL CHARTS
+const charts={};
+charts.trend=echarts.init(document.getElementById('trendChart'));
+charts.town=echarts.init(document.getElementById('townChart'));
+charts.flat=echarts.init(document.getElementById('flatChart'));
+charts.floor=echarts.init(document.getElementById('floorChart'));
+charts.street=echarts.init(document.getElementById('streetChart'));
+
+// TREND CHART
+function buildTrend(){
+  const f=YEAR_FILTERS[curYear];
+  const isPrice=curMetric==='price';
+  const d=isPrice?f.prices:f.tx;
+  charts.trend.setOption({
+    backgroundColor:'transparent',
+    tooltip:{...TT,trigger:'axis',axisPointer:{type:'cross',label:{backgroundColor:'rgba(239,35,60,0.08)'}},
+      formatter:p=>`<b>${p[0].axisValue}</b><br/>${isPrice?'Avg Price: $'+p[0].value.toLocaleString():'Transactions: '+p[0].value.toLocaleString()}`},
+    grid:{top:8,right:12,bottom:50,left:60},
+    xAxis:{type:'category',data:f.years,...AX},
+    yAxis:{type:'value',...AX,axisLabel:{...AX.axisLabel,formatter:v=>isPrice?'$'+(v/1000).toFixed(0)+'K':(v/1000).toFixed(0)+'K'}},
+    dataZoom:[
+      {type:'inside',start:0,end:100},
+      {type:'slider',show:true,height:18,bottom:16,borderColor:'rgba(239,35,60,0.15)',fillerColor:'rgba(239,35,60,0.08)',handleStyle:{color:'#EF233C',borderColor:'#EF233C'},textStyle:{color:'#888899',fontFamily:'JetBrains Mono',fontSize:7},brushSelect:false}
+    ],
+    series:[{
+      type:'line',data:d,smooth:true,
+      symbol:'circle',symbolSize:7,
+      lineStyle:{color:'#EF233C',width:2.5},
+      itemStyle:{color:'#EF233C',borderColor:'#fff',borderWidth:2},
+      areaStyle:{color:{type:'linear',x:0,y:0,x2:0,y2:1,colorStops:[{offset:0,color:'rgba(239,35,60,0.18)'},{offset:1,color:'rgba(239,35,60,0.01)'}]}}
+    }]
+  });
 }
-trendChart.setOption(trendOpt('price'));
-function switchTrend(m,btn){trendChart.setOption(trendOpt(m));document.querySelectorAll('.tb').forEach(b=>b.classList.remove('on'));btn.classList.add('on');}
 
-// TOWN
-const townChart=echarts.init(document.getElementById('townChart'),null,{renderer:'canvas'});
-townChart.setOption({backgroundColor:'transparent',tooltip:{...tt,trigger:'axis',formatter:p=>`<b>${p[0].name}</b><br/>Avg: $${p[0].value.toLocaleString()}`},
-grid:{top:5,right:10,bottom:5,left:115},
-xAxis:{type:'value',...ax,axisLabel:{...ax.axisLabel,formatter:v=>'$'+(v/1000).toFixed(0)+'K'}},
-yAxis:{type:'category',data:[...TOWN_NAMES].reverse(),...ax},
-series:[{type:'bar',data:[...TOWN_PRICES].reverse().map((v,i)=>({value:v,itemStyle:{color:i===9?'#EF233C':i>=7?'rgba(239,35,60,0.6)':'rgba(239,35,60,0.25)',borderColor:'#EF233C',borderWidth:1,borderRadius:[0,4,4,0]}})),barMaxWidth:14}]});
+// TOWN CHART
+function buildTown(){
+  charts.town.setOption({
+    backgroundColor:'transparent',
+    tooltip:{...TT,trigger:'axis',formatter:p=>`<b>${p[0].name}</b><br/>Avg Price: $${p[0].value.toLocaleString()}`},
+    grid:{top:5,right:12,bottom:5,left:115},
+    xAxis:{type:'value',...AX,axisLabel:{...AX.axisLabel,formatter:v=>'$'+(v/1000).toFixed(0)+'K'}},
+    yAxis:{type:'category',data:[...TOWN_NAMES].reverse(),...AX},
+    series:[{
+      type:'bar',
+      data:[...TOWN_PRICES].reverse().map((v,i)=>({value:v,itemStyle:{color:i===9?'#EF233C':i>=7?'rgba(239,35,60,0.55)':'rgba(239,35,60,0.22)',borderColor:'#EF233C',borderWidth:1,borderRadius:[0,5,5,0]}})),
+      barMaxWidth:16,
+      emphasis:{itemStyle:{opacity:1,shadowBlur:8,shadowColor:'rgba(239,35,60,0.3)'}}
+    }]
+  });
+}
 
-// FLAT
-const flatChart=echarts.init(document.getElementById('flatChart'),null,{renderer:'canvas'});
-flatChart.setOption({backgroundColor:'transparent',tooltip:{...tt,trigger:'item',formatter:p=>`${p.name}<br/>Transactions: ${p.value.toLocaleString()}<br/>Avg Price: $${FLAT_PRICES[p.dataIndex].toLocaleString()}`},
-legend:{bottom:0,textStyle:{color:'#8888A0',fontFamily:'JetBrains Mono',fontSize:7},icon:'circle',itemWidth:7,itemHeight:7},
-series:[{type:'pie',radius:['42%','68%'],center:['50%','44%'],
-data:FLAT_TYPES.map((t,i)=>({name:t,value:FLAT_TX[i],dataIndex:i,itemStyle:{color:['#EF233C','#D90429','rgba(239,35,60,0.7)','rgba(239,35,60,0.5)','#118AB2','#06D6A0','#FFB703'][i]+'CC',borderColor:['#EF233C','#D90429','#EF233C','#EF233C','#118AB2','#06D6A0','#FFB703'][i],borderWidth:1.5}})),label:{show:false},emphasis:{itemStyle:{shadowBlur:10}}}]});
+// FLAT CHART
+function buildFlat(){
+  const COLORS=['#EF233C','#D90429','rgba(239,35,60,0.75)','rgba(239,35,60,0.55)','#118AB2','#06D6A0','#FFB703'];
+  charts.flat.setOption({
+    backgroundColor:'transparent',
+    tooltip:{...TT,trigger:'item',formatter:p=>`<b>${p.name}</b><br/>Transactions: ${p.value.toLocaleString()}<br/>Avg Price: $${FLAT_PRICES[p.dataIndex].toLocaleString()}`},
+    legend:{bottom:0,textStyle:{color:'#888899',fontFamily:'JetBrains Mono',fontSize:7},icon:'circle',itemWidth:8,itemHeight:8,itemGap:8},
+    series:[{
+      type:'pie',radius:['40%','68%'],center:['50%','44%'],
+      data:FLAT_TYPES.map((t,i)=>({name:t,value:FLAT_TX[i],dataIndex:i,itemStyle:{color:COLORS[i],borderColor:'#fff',borderWidth:2}})),
+      label:{show:false},
+      emphasis:{itemStyle:{shadowBlur:12,shadowColor:'rgba(0,0,0,0.15)'}}
+    }]
+  });
+}
 
-// FLOOR
-const floorChart=echarts.init(document.getElementById('floorChart'),null,{renderer:'canvas'});
-floorChart.setOption({backgroundColor:'transparent',tooltip:{...tt,trigger:'axis',formatter:p=>`${p[0].name}<br/>Avg: $${p[0].value.toLocaleString()}`},
-grid:{top:5,right:10,bottom:40,left:55},
-xAxis:{type:'category',data:FLOOR_LABELS,...ax,axisLabel:{...ax.axisLabel,rotate:10}},
-yAxis:{type:'value',...ax,axisLabel:{...ax.axisLabel,formatter:v=>'$'+(v/1000).toFixed(0)+'K'}},
-series:[{type:'bar',data:FLOOR_PRICES.map((v,i)=>({value:v,itemStyle:{color:['rgba(239,35,60,0.15)','rgba(239,35,60,0.3)','rgba(239,35,60,0.5)','rgba(239,35,60,0.75)','#EF233C'][i],borderColor:'#EF233C',borderWidth:1,borderRadius:[4,4,0,0]}})),barMaxWidth:30}]});
+// FLOOR CHART
+function buildFloor(){
+  charts.floor.setOption({
+    backgroundColor:'transparent',
+    tooltip:{...TT,trigger:'axis',formatter:p=>`<b>${p[0].name}</b><br/>Avg Price: $${p[0].value.toLocaleString()}`},
+    grid:{top:5,right:12,bottom:44,left:55},
+    xAxis:{type:'category',data:FLOOR_LABELS,...AX,axisLabel:{...AX.axisLabel,rotate:12,fontSize:7}},
+    yAxis:{type:'value',...AX,axisLabel:{...AX.axisLabel,formatter:v=>'$'+(v/1000).toFixed(0)+'K'}},
+    series:[{
+      type:'bar',
+      data:FLOOR_PRICES.map((v,i)=>({value:v,itemStyle:{color:['rgba(239,35,60,0.15)','rgba(239,35,60,0.3)','rgba(239,35,60,0.5)','rgba(239,35,60,0.72)','#EF233C'][i],borderColor:'#EF233C',borderWidth:1,borderRadius:[5,5,0,0]}})),
+      barMaxWidth:35,
+      emphasis:{itemStyle:{opacity:1}}
+    }]
+  });
+}
 
-// STREETS
-const streetChart=echarts.init(document.getElementById('streetChart'),null,{renderer:'canvas'});
-streetChart.setOption({backgroundColor:'transparent',tooltip:{...tt,trigger:'axis',formatter:p=>`${p[0].name}<br/>Avg: $${p[0].value.toLocaleString()}`},
-grid:{top:5,right:10,bottom:5,left:95},
-xAxis:{type:'value',...ax,axisLabel:{...ax.axisLabel,formatter:v=>'$'+(v/1000).toFixed(0)+'K'}},
-yAxis:{type:'category',data:[...STREET_NAMES].reverse(),...ax,axisLabel:{...ax.axisLabel,fontSize:7}},
-series:[{type:'bar',data:[...STREET_PRICES].reverse().map((v,i)=>({value:v,itemStyle:{color:i>=8?'#EF233C':'rgba(239,35,60,0.3)',borderColor:'#EF233C',borderWidth:1,borderRadius:[0,4,4,0]}})),barMaxWidth:11}]});
+// STREET CHART
+function buildStreet(){
+  charts.street.setOption({
+    backgroundColor:'transparent',
+    tooltip:{...TT,trigger:'axis',formatter:p=>`<b>${p[0].name}</b><br/>Avg Price: $${p[0].value.toLocaleString()}`},
+    grid:{top:5,right:12,bottom:5,left:98},
+    xAxis:{type:'value',...AX,axisLabel:{...AX.axisLabel,formatter:v=>'$'+(v/1000).toFixed(0)+'K'}},
+    yAxis:{type:'category',data:[...STREET_NAMES].reverse(),...AX,axisLabel:{...AX.axisLabel,fontSize:7}},
+    series:[{
+      type:'bar',
+      data:[...STREET_PRICES].reverse().map((v,i)=>({value:v,itemStyle:{color:i>=8?'#EF233C':'rgba(239,35,60,0.28)',borderColor:'#EF233C',borderWidth:1,borderRadius:[0,5,5,0]}})),
+      barMaxWidth:12,
+      emphasis:{itemStyle:{opacity:1}}
+    }]
+  });
+}
 
-function setFilter(btn){
-  const siblings=[...btn.parentElement.children].filter(c=>c.tagName==='BUTTON');
-  const sepIdx=[...btn.parentElement.children].findIndex(c=>c.classList.contains('sep'));
-  const myIdx=siblings.indexOf(btn);
-  const group=myIdx<sepIdx?siblings.slice(0,sepIdx):siblings.slice(sepIdx);
-  group.forEach(b=>b.classList.remove('on'));
+// BUILD ALL
+function buildAll(){buildTrend();buildTown();buildFlat();buildFloor();buildStreet();}
+buildAll();
+
+// FILTER FUNCTIONS
+function filterYear(btn,y){
+  document.querySelectorAll('.fbar .fb').slice(0,4).forEach(b=>b.classList.remove('on'));
   btn.classList.add('on');
+  curYear=y;
+  buildTrend();
 }
 
-window.addEventListener('resize',()=>[trendChart,townChart,flatChart,floorChart,streetChart].forEach(c=>c.resize()));
+function switchMetric(btn,m){
+  document.querySelectorAll('#mv-price,#mv-vol').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  curMetric=m;
+  buildTrend();
+}
+
+// RESIZE
+window.addEventListener('resize',()=>Object.values(charts).forEach(c=>c.resize()));
 </script>
 </body>
 </html>
